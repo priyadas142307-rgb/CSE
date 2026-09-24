@@ -72,7 +72,7 @@ function Navbar() {
     window.dispatchEvent(new Event('cse-auth-updated'))
     setOpenMenu(false)
     setMobileMenu(false)
-    window.location.href = 'http://127.0.0.1:5173/'
+    window.location.href = '/'
   }
 
   function closeMobileMenu() {

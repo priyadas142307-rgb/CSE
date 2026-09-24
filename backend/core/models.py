@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Event(models.Model):
@@ -93,10 +94,6 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return self.subject
-    
-
-from django.db import models
-from django.contrib.auth.models import User
 
 
 class MemberProfile(models.Model):
@@ -113,11 +110,6 @@ class MemberProfile(models.Model):
 
     def __str__(self):
         return self.full_name
-
-from django.db import models
-from django.contrib.auth.models import User
-
-# Existing models above...
 
 
 class PendingEventSubmission(models.Model):

@@ -1,9 +1,17 @@
 import { Navigate } from 'react-router-dom'
 
 function AdminRoute({ children }) {
-  const user = JSON.parse(localStorage.getItem('cseSocietyUser'))
+  let user = null
+  try {
+    const raw = localStorage.getItem('cseSocietyUser')
+    if (raw) {
+      user = JSON.parse(raw)
+    }
+  } catch {
+    user = null
+  }
 
-  if (!user || !user.is_staff) {
+  if (!user || (!user.is_staff && !user.is_superuser)) {
     return <Navigate to="/login" replace />
   }
 

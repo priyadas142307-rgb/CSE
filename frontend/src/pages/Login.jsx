@@ -87,9 +87,9 @@ function Login() {
 
       setTimeout(() => {
         if (result.user.is_staff || result.user.is_superuser) {
-          window.location.href = 'http://127.0.0.1:5173/admin'
+          window.location.href = '/admin'
         } else {
-          window.location.href = 'http://127.0.0.1:5173/'
+          window.location.href = '/'
         }
       }, 300)
     } catch (err) {
@@ -100,29 +100,14 @@ function Login() {
   }
 
   function validateStudentId(studentId) {
-  return /^\d{3}-115-\d{3}$/.test(studentId)
-}
+    return /^\d{3}-115-\d{3}$/.test(studentId)
+  }
 
-function validateBatch(batch) {
-  return /^\d+$/.test(batch)
-}
+  function validateBatch(batch) {
+    return /^\d+$/.test(batch)
+  }
 
-function validateUsername(username) {
-  const startsWithThreeLetters = /^[A-Za-z]{3,}/.test(username)
-  const digitCount = (username.match(/\d/g) || []).length
-  return startsWithThreeLetters && digitCount >= 2
-}
-
-function validatePassword(password) {
-  const minLength = password.length >= 6
-  const hasUppercase = /[A-Z]/.test(password)
-  const hasNumber = /\d/.test(password)
-  const hasSpecial = /[^A-Za-z0-9]/.test(password)
-
-  return minLength && hasUppercase && hasNumber && hasSpecial
-}
-
- async function handleRegisterSubmit(e) {
+  async function handleRegisterSubmit(e) {
   e.preventDefault()
   setStatus('')
   setError('')

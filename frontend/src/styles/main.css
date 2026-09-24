@@ -1893,6 +1893,7 @@ select {
 }
 
 .contact-premium-error,
+.submit-error,
 .login-auth-error,
 .profile-form-error,
 .password-error-box {
@@ -1900,9 +1901,9 @@ select {
   padding: 14px 16px;
   border-radius: 14px;
   background: #fff1f1;
-  color: #c62828;
+  color: #c92a2a;
   font-weight: 700;
-  border: 1px solid #f3c2c2;
+  border: 1px solid #ffc9c9;
 }
 
 /* =========================

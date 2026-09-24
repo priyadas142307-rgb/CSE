@@ -52,7 +52,7 @@ def is_valid_password(password):
 def admin_required_response(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Authentication required."}, status=401)
-    if not request.user.is_staff:
+    if not (request.user.is_staff or request.user.is_superuser):
         return JsonResponse({"error": "Admin access required."}, status=403)
     return None
 
@@ -1351,16 +1351,18 @@ def update_profile_api(request):
         return JsonResponse({"error": "Login required."}, status=401)
 
     try:
-        profile = request.user.member_profile
+        profile = getattr(request.user, 'member_profile', None)
+        if not profile:
+            profile = MemberProfile(user=request.user)
 
-        full_name = request.POST.get('full_name', profile.full_name).strip()
-        student_id = request.POST.get('student_id', profile.student_id).strip()
-        batch = request.POST.get('batch', profile.batch).strip()
-        designation = request.POST.get('designation', profile.designation).strip()
-        year_label = request.POST.get('year_label', profile.year_label).strip()
-        details = request.POST.get('details', profile.details).strip()
-        facebook_url = request.POST.get('facebook_url', profile.facebook_url or '').strip()
-        linkedin_url = request.POST.get('linkedin_url', profile.linkedin_url or '').strip()
+        full_name = request.POST.get('full_name', profile.full_name if profile.pk else request.user.username).strip()
+        student_id = request.POST.get('student_id', profile.student_id if profile.pk else '').strip()
+        batch = request.POST.get('batch', profile.batch if profile.pk else '').strip()
+        designation = request.POST.get('designation', profile.designation if profile.pk else '').strip()
+        year_label = request.POST.get('year_label', profile.year_label if profile.pk else '').strip()
+        details = request.POST.get('details', profile.details if profile.pk else '').strip()
+        facebook_url = request.POST.get('facebook_url', (profile.facebook_url or '') if profile.pk else '').strip()
+        linkedin_url = request.POST.get('linkedin_url', (profile.linkedin_url or '') if profile.pk else '').strip()
 
         if not is_valid_student_id(student_id):
             return JsonResponse({

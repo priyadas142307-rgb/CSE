@@ -5,6 +5,7 @@ import { submitNotice } from '../../services/api'
 function SubmitNotice() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState('')
   const [formData, setFormData] = useState({
@@ -29,10 +30,14 @@ function SubmitNotice() {
   async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true)
+    setStatus('')
+    setError('')
     try {
       const result = await submitNotice(formData)
       setStatus(result.message)
       setTimeout(() => navigate('/'), 1200)
+    } catch (err) {
+      setError(err.message || 'Failed to submit notice. Please check required fields.')
     } finally {
       setLoading(false)
     }
@@ -105,6 +110,7 @@ function SubmitNotice() {
             )}
 
             {status && <p className="submit-success">{status}</p>}
+            {error && <p className="submit-error">{error}</p>}
 
             <button type="submit" className="admin-primary-btn submit-main-btn" disabled={loading}>
               {loading ? 'Submitting...' : 'Submit Notice'}
